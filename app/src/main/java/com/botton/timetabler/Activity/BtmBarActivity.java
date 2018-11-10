@@ -26,7 +26,6 @@ public class BtmBarActivity extends AppCompatActivity {
     private String id;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,11 +43,10 @@ public class BtmBarActivity extends AppCompatActivity {
     private void initView() {
 
 
-        RadioGroup radioGroup = findViewById(R.id.radio_group);
-
-        RadioButton radioButton1 = findViewById(R.id.rb_kcb);
-        RadioButton radioButton2 = findViewById(R.id.rb_fx);
-        RadioButton radioButton3 = findViewById(R.id.rb_xy);
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
+        RadioButton radioButton1 = (RadioButton) findViewById(R.id.rb_kcb);
+        RadioButton radioButton2 = (RadioButton) findViewById(R.id.rb_fx);
+        RadioButton radioButton3 = (RadioButton) findViewById(R.id.rb_xy);
 
         TimeTableFragment timeTableFragment = new TimeTableFragment();
         DiscoverFragment discoverFragment = new DiscoverFragment();
@@ -59,56 +57,48 @@ public class BtmBarActivity extends AppCompatActivity {
         Drawable drawable_fx = getResources().getDrawable(R.drawable.selector4fx);
         Drawable drawable_xy = getResources().getDrawable(R.drawable.selector4xy);
 
-        drawable_kcb.setBounds(0,0,80,80);
-        drawable_fx.setBounds(0,0,80,80);
-        drawable_xy.setBounds(0,0,80,80);
+        drawable_kcb.setBounds(0, 0, 80, 80);
+        drawable_fx.setBounds(0, 0, 80, 80);
+        drawable_xy.setBounds(0, 0, 80, 80);
 
-        radioButton1.setCompoundDrawables(null,drawable_kcb,null,null);
-        radioButton2.setCompoundDrawables(null,drawable_fx,null,null);
-        radioButton3.setCompoundDrawables(null,drawable_xy,null,null);
-
-
-
-
+        radioButton1.setCompoundDrawables(null, drawable_kcb, null, null);
+        radioButton2.setCompoundDrawables(null, drawable_fx, null, null);
+        radioButton3.setCompoundDrawables(null, drawable_xy, null, null);
 
 
         //初始加载课程表fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout,timeTableFragment).commit();
+        fragmentTransaction.replace(R.id.frameLayout, timeTableFragment).commit();
 
         //设置默认选中项
-        RadioButton kcbButton = findViewById(R.id.rb_kcb);
+        RadioButton kcbButton = (RadioButton) findViewById(R.id.rb_kcb);
         kcbButton.setChecked(true);
 
         //设置状态改变的事件
         radioGroup.setOnCheckedChangeListener((radioGroup1, i) -> {
-            switch (radioGroup1.getCheckedRadioButtonId()){
+            switch (radioGroup1.getCheckedRadioButtonId()) {
                 case R.id.rb_kcb:
                     FragmentManager fragmentManager1 = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
-                    fragmentTransaction1.replace(R.id.frameLayout,timeTableFragment).commit();
+                    fragmentTransaction1.replace(R.id.frameLayout, timeTableFragment).commit();
                     break;
                 case R.id.rb_fx:
                     FragmentManager fragmentManager2 = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
-                    fragmentTransaction2.replace(R.id.frameLayout,discoverFragment).commit();
+                    fragmentTransaction2.replace(R.id.frameLayout, discoverFragment).commit();
 
                     break;
                 case R.id.rb_xy:
 
                     FragmentManager fragmentManager3 = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction3 = fragmentManager3.beginTransaction();
-                    fragmentTransaction3.replace(R.id.frameLayout,collegeFragment).commit();
+                    fragmentTransaction3.replace(R.id.frameLayout, collegeFragment).commit();
                     break;
             }
         });
 
     }
-
-
-
-
 
 
 }
