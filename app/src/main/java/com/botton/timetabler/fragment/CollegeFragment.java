@@ -1,7 +1,6 @@
-package com.botton.timetabler.Fragment;
+package com.botton.timetabler.fragment;
 
 
-import android.app.ListFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,5 +21,13 @@ public class CollegeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_college, container, false);
         return view;
+    }
+
+    public static CollegeFragment newInstance(String content) {
+        Bundle args = new Bundle();
+        args.putString("ARGS", content);
+        CollegeFragment fragment = new CollegeFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 }

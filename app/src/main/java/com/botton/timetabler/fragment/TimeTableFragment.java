@@ -1,29 +1,29 @@
-package com.botton.timetabler.Fragment;
+package com.botton.timetabler.fragment;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.botton.timetabler.Activity.AddCourseActivity;
+import com.botton.timetabler.activity.AddCourseActivity;
 import com.botton.timetabler.R;
-import com.botton.timetabler.Util.ACache;
-import com.botton.timetabler.Util.Course;
+import com.botton.timetabler.util.ACache;
+import com.botton.timetabler.util.Course;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by bzdell on 2018/7/21.
@@ -53,18 +53,65 @@ public class TimeTableFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timetable, container, false);
-
+        Log.e(TAG, "onCreateView");
         initview(view);
-        aCache = ACache.get(getActivity());
-        ArrayList<Course> coursesList = (ArrayList<Course>) aCache.getAsObject("tablelist"); //将Course对象添加到Arraylist中，再存入aCache缓冲器中，用于保存课程，这里从aCache中读取保存的课程表
-
-        if (coursesList != null) { //如果课程表不为空，则动态生成界面
-            for (Course course : coursesList) { //从ArrayList中一个个读取course并显示出来
-                createLeftView(course); //创建课程节数视图
-                createCourseView(course); //创建课程视图
-            }
-        }
+        inittable();
         return view;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.e(TAG, "onCreate");
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.e(TAG, "onActivityCreated");
+    }
+
+
+    @Override
+    public void onStart() {
+        Log.e(TAG, "onStart");
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        Log.e(TAG, "onResume");
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        Log.e(TAG, "onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        Log.e(TAG, "onStop");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.e(TAG, "onDestroyView");
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.e(TAG, "onDestroy");
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        Log.e(TAG, "onDetach");
+        super.onDetach();
     }
 
     // 初始化控件
@@ -88,6 +135,17 @@ public class TimeTableFragment extends Fragment {
         });
     }
 
+    // 动态生成界面
+    private void inittable() {
+        createLeftView(); //创建课程节数视图
+        aCache = ACache.get(getActivity());
+        ArrayList<Course> coursesList = (ArrayList<Course>) aCache.getAsObject("tablelist"); //将Course对象添加到Arraylist中，再存入aCache缓冲器中，用于保存课程，这里从aCache中读取保存的课程表
+        if (coursesList != null) { //如果课程表不为空，则动态生成界面
+            for (Course course : coursesList) { //从ArrayList中一个个读取course并显示出来
+                createCourseView(course); //创建课程视图
+            }
+        }
+    }
 
     //保存课程或者待办
     private void saveData(Course course) {
@@ -105,7 +163,7 @@ public class TimeTableFragment extends Fragment {
 
 
     //创建课程节数视图
-    private void createLeftView(Course course) {
+    private void createLeftView() {
         int len = 10;
         if (len > maxCoursesNumber) {
             for (int i = 0; i < len - maxCoursesNumber; i++) {
@@ -188,10 +246,11 @@ public class TimeTableFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e(TAG, "onActivityResult++++++++++++++++++++++");
         if (requestCode == 0 && resultCode == 0 && data != null) {
             Course course = (Course) data.getSerializableExtra("course");
             //创建课程表左边视图(节数)
-            createLeftView(course);
+            createLeftView();
             //创建课程表视图
             createCourseView(course);
             //存储数据到数据库
@@ -199,5 +258,13 @@ public class TimeTableFragment extends Fragment {
         }
     }
 
+
+    public static TimeTableFragment newInstance(String content) {
+        Bundle args = new Bundle();
+        args.putString("ARGS", content);
+        TimeTableFragment fragment = new TimeTableFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
 }

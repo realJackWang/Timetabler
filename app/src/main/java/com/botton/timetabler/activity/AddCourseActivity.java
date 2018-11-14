@@ -1,4 +1,4 @@
-package com.botton.timetabler.Activity;
+package com.botton.timetabler.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.botton.timetabler.R;
-import com.botton.timetabler.Util.Course;
+import com.botton.timetabler.util.Course;
 
 /**
  * @author JackWang

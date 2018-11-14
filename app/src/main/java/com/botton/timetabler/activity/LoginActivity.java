@@ -1,4 +1,4 @@
-package com.botton.timetabler.Activity;
+package com.botton.timetabler.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.botton.timetabler.R;
+
 
 public class LoginActivity extends AppCompatActivity {
      String Id ;
@@ -22,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
         //点击登陆按钮 就跳转到课程表主界面辣
         login.setOnClickListener((view -> {
             Intent intent = new Intent();
-            intent.setClass(LoginActivity.this, BtmBarActivity.class);
+            intent.setClass(LoginActivity.this, BottomBarActivity.class);
             intent.putExtra("userId",Id);
             LoginActivity.this.startActivity(intent);
         }));
