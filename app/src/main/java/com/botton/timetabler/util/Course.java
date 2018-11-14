@@ -1,4 +1,4 @@
-package com.botton.timetabler.Util;
+package com.botton.timetabler.util;
 
 
 import java.io.Serializable;
