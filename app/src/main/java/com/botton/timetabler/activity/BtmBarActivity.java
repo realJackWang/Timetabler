@@ -1,25 +1,18 @@
-package com.botton.timetabler.Activity;
+package com.botton.timetabler.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.ashokvarma.bottomnavigation.BottomNavigationBar;
-import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.botton.timetabler.Fragment.CollegeFragment;
-import com.botton.timetabler.Fragment.DiscoverFragment;
-import com.botton.timetabler.Fragment.TimeTableFragment;
+import com.botton.timetabler.fragment.CollegeFragment;
+import com.botton.timetabler.fragment.DiscoverFragment;
+import com.botton.timetabler.fragment.TimeTableFragment;
 import com.botton.timetabler.R;
-
-import java.util.ArrayList;
 
 public class BtmBarActivity extends AppCompatActivity {
 
