@@ -10,6 +10,13 @@ import android.widget.Toast;
 import com.botton.timetabler.R;
 import com.botton.timetabler.Util.Course;
 
+/**
+ * @author JackWang
+ * @fileName AddCourseActivity
+ * @date on 2018/11/14 上午 11:47
+ * @email 544907049@qq.com
+ **/
+
 public class AddCourseActivity extends AppCompatActivity {
 
     @Override
