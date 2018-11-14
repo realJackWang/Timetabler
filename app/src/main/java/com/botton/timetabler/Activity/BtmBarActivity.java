@@ -43,10 +43,10 @@ public class BtmBarActivity extends AppCompatActivity {
     private void initView() {
 
 
-        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
-        RadioButton radioButton1 = (RadioButton) findViewById(R.id.rb_kcb);
-        RadioButton radioButton2 = (RadioButton) findViewById(R.id.rb_fx);
-        RadioButton radioButton3 = (RadioButton) findViewById(R.id.rb_xy);
+        RadioGroup radioGroup = findViewById(R.id.radio_group);
+        RadioButton radioButton1 = findViewById(R.id.rb_kcb);
+        RadioButton radioButton2 = findViewById(R.id.rb_fx);
+        RadioButton radioButton3 = findViewById(R.id.rb_xy);
 
         TimeTableFragment timeTableFragment = new TimeTableFragment();
         DiscoverFragment discoverFragment = new DiscoverFragment();
@@ -72,7 +72,7 @@ public class BtmBarActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frameLayout, timeTableFragment).commit();
 
         //设置默认选中项
-        RadioButton kcbButton = (RadioButton) findViewById(R.id.rb_kcb);
+        RadioButton kcbButton = findViewById(R.id.rb_kcb);
         kcbButton.setChecked(true);
 
         //设置状态改变的事件

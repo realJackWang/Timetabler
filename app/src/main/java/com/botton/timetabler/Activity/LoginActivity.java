@@ -15,8 +15,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_login);
-        Button login = (Button) findViewById(R.id.login);
-        TextView studentId = (TextView) findViewById(R.id.studentId);
+        Button login = findViewById(R.id.login);
+        TextView studentId = findViewById(R.id.studentId);
         Id = studentId.getText().toString();
 
         //点击登陆按钮 就跳转到课程表主界面辣
