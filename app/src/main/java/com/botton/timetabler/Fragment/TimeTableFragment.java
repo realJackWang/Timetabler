@@ -1,6 +1,7 @@
 package com.botton.timetabler.Fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.botton.timetabler.Activity.AddCourseActivity;
 import com.botton.timetabler.R;
 import com.botton.timetabler.Util.ACache;
 import com.botton.timetabler.Util.Course;
@@ -26,6 +28,7 @@ import java.util.HashMap;
 /**
  * Created by bzdell on 2018/7/21.
  */
+
 
 public class TimeTableFragment extends Fragment {
 
@@ -44,7 +47,7 @@ public class TimeTableFragment extends Fragment {
     int currentCoursesNumber = 0;
     int maxCoursesNumber = 0;
 
-    ACache aCache;
+    private ACache aCache;
 
     @Nullable
     @Override
@@ -55,15 +58,16 @@ public class TimeTableFragment extends Fragment {
         aCache = ACache.get(getActivity());
         ArrayList<Course> coursesList = (ArrayList<Course>) aCache.getAsObject("tablelist"); //将Course对象添加到Arraylist中，再存入aCache缓冲器中，用于保存课程，这里从aCache中读取保存的课程表
 
-        if (coursesList != null) {//如果课程表不为空，则动态生成界面
-            for (Course course : coursesList) {//从ArrayList中一个个读取course并显示出来
-                createLeftView(course);//创建课程节数视图
-                createCourseView(course);//创建课程视图
+        if (coursesList != null) { //如果课程表不为空，则动态生成界面
+            for (Course course : coursesList) { //从ArrayList中一个个读取course并显示出来
+                createLeftView(course); //创建课程节数视图
+                createCourseView(course); //创建课程视图
             }
         }
         return view;
     }
 
+    // 初始化控件
     private void initview(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         button = view.findViewById(R.id.button2);
@@ -79,21 +83,19 @@ public class TimeTableFragment extends Fragment {
 
 
         button.setOnClickListener(v -> {
-            Course course = new Course("1", "2", "3",1, 1, 2);
-            saveData(course);
+            Intent intent = new Intent(getContext(), AddCourseActivity.class);
+            this.startActivityForResult(intent, 0);
         });
     }
 
 
-
     //保存课程或者待办
     private void saveData(Course course) {
-        ArrayList<Course> arrayList_1 =  (ArrayList<Course>) aCache.getAsObject("tablelist");
-        if (arrayList_1 != null){
+        ArrayList<Course> arrayList_1 = (ArrayList<Course>) aCache.getAsObject("tablelist");
+        if (arrayList_1 != null) {
             arrayList_1.add(course);
             aCache.put("tablelist", arrayList_1);
-        }
-        else{
+        } else {
             ArrayList<Course> arrayList_2 = new ArrayList<>();
             arrayList_2.add(course);
             aCache.put("tablelist", arrayList_2);
@@ -102,10 +104,9 @@ public class TimeTableFragment extends Fragment {
     }
 
 
-
     //创建课程节数视图
     private void createLeftView(Course course) {
-        int len = course.getEnd();
+        int len = 10;
         if (len > maxCoursesNumber) {
             for (int i = 0; i < len - maxCoursesNumber; i++) {
                 View view_2 = getLayoutInflater().inflate(R.layout.left_view, null);
@@ -161,29 +162,42 @@ public class TimeTableFragment extends Fragment {
             text.setText(course.getCourseName() + "\n" + course.getTeacher() + "\n" + course.getClassRoom()); //显示课程名
             day.addView(v);
             //长按删除课程
-            v.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    v.setVisibility(View.GONE);//先隐藏
-                    day.removeView(v);//再移除课程视图
-                    /*这里写删除科课程的代码*/
-                    ArrayList<Course> coursesList = (ArrayList<Course>) aCache.getAsObject("tablelist");
-                    coursesList.remove(course);
-                    return true;
+            v.setOnLongClickListener(v1 -> {
+
+                // TODO: 2018/11/14 这里需要添加一个确定弹窗
+
+                v1.setVisibility(View.GONE);//先隐藏
+                day.removeView(v1);//再移除课程视图
+                /*这里写删除科课程的代码*/
+                ArrayList<Course> coursesList = (ArrayList<Course>) aCache.getAsObject("tablelist");
+                for (int i = 0; i < coursesList.size(); i++) {
+                    if (coursesList.get(i).getCourseName().equals(course.getCourseName())
+                            && coursesList.get(i).getClassRoom().equals(course.getClassRoom())
+                            && coursesList.get(i).getDay() == course.getDay()
+                            && coursesList.get(i).getTeacher().equals(course.getTeacher())
+                            && coursesList.get(i).getStart() == course.getStart()) {
+                        coursesList.remove(i);
+                    }
                 }
+                aCache.put("tablelist", coursesList);
+                return true;
             });
         }
     }
 
 
-
-/*
-    public static TimeTableFragment newInstance(String content) {
-        Bundle args = new Bundle();
-        args.putString("ARGS", content);
-        TimeTableFragment fragment = new TimeTableFragment();
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0 && resultCode == 0 && data != null) {
+            Course course = (Course) data.getSerializableExtra("course");
+            //创建课程表左边视图(节数)
+            createLeftView(course);
+            //创建课程表视图
+            createCourseView(course);
+            //存储数据到数据库
+            saveData(course);
+        }
     }
-    */
+
+
 }
