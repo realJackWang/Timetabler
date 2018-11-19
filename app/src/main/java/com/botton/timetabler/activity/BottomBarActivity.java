@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -41,14 +40,13 @@ public class BottomBarActivity extends FragmentActivity {
         test_a =this;
 
 
-
         BottomNavigationBar bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
         bottomNavigationBar
                 .setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC
                 );
         bottomNavigationBar       //定义下面图标及名称及按压颜色
-                .addItem(new BottomNavigationItem(R.drawable.selector4kcb, "课程表").setActiveColorResource(R.color.blue))
+                .addItem(new BottomNavigationItem(R.drawable.selector4kcb, "日程表").setActiveColorResource(R.color.blue))
                 .addItem(new BottomNavigationItem(R.drawable.selector4fx, "发现").setActiveColorResource(R.color.blue))
                 .addItem(new BottomNavigationItem(R.drawable.selector4xy, "校园").setActiveColorResource(R.color.blue))
                 .setFirstSelectedPosition(0)
@@ -63,11 +61,10 @@ public class BottomBarActivity extends FragmentActivity {
                 if (fragments != null) {
 
 
-
                     if (position < fragments.size()) {
                         FragmentManager fm = getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
-                        Fragment from = fm.findFragmentById(R.id.layFrame);   //获取当前的fragment
+                        Fragment thisfragment = fm.findFragmentById(R.id.layFrame);   //获取当前的fragment
                         Fragment fragment = fragments.get(position);
 
 
@@ -117,7 +114,6 @@ public class BottomBarActivity extends FragmentActivity {
         fragments.add(CollegeFragment.newInstance("个人"));
         return fragments;
     }
-
 
 
     public void onBackPressed() {    //按两次返回退出程序
