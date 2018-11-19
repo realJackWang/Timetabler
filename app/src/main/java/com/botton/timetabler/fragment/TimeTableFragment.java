@@ -1,16 +1,22 @@
 package com.botton.timetabler.fragment;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,6 +30,7 @@ import com.botton.timetabler.util.Course;
 import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
+import java.lang.Math;
 
 /**
  * Created by bzdell on 2018/7/21.
@@ -31,7 +38,7 @@ import static android.content.ContentValues.TAG;
 
 
 public class TimeTableFragment extends Fragment {
-
+    
     private RelativeLayout day;
     private RelativeLayout day_1;
     private RelativeLayout day_2;
@@ -41,8 +48,7 @@ public class TimeTableFragment extends Fragment {
     private RelativeLayout day_6;
     private RelativeLayout day_7;
 
-
-    Button button;
+    ImageView addcourse;
     LinearLayout leftViewLayout;
     int currentCoursesNumber = 0;
     int maxCoursesNumber = 0;
@@ -59,67 +65,66 @@ public class TimeTableFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.e(TAG, "onCreate");
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.e(TAG, "onActivityCreated");
-    }
-
-
-    @Override
-    public void onStart() {
-        Log.e(TAG, "onStart");
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        Log.e(TAG, "onResume");
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        Log.e(TAG, "onPause");
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        Log.e(TAG, "onStop");
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-        Log.e(TAG, "onDestroyView");
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.e(TAG, "onDestroy");
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDetach() {
-        Log.e(TAG, "onDetach");
-        super.onDetach();
-    }
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        Log.e(TAG, "onCreate");
+//        super.onCreate(savedInstanceState);
+//    }
+//
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        Log.e(TAG, "onActivityCreated");
+//    }
+//
+//
+//    @Override
+//    public void onStart() {
+//        Log.e(TAG, "onStart");
+//        super.onStart();
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        Log.e(TAG, "onResume");
+//        super.onResume();
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        Log.e(TAG, "onPause");
+//        super.onPause();
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        Log.e(TAG, "onStop");
+//        super.onStop();
+//    }
+//
+//    @Override
+//    public void onDestroyView() {
+//        Log.e(TAG, "onDestroyView");
+//        super.onDestroyView();
+//    }
+//
+//    @Override
+//    public void onDestroy() {
+//        Log.e(TAG, "onDestroy");
+//        super.onDestroy();
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        Log.e(TAG, "onDetach");
+//        super.onDetach();
+//    }
 
     // 初始化控件
     private void initview(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        button = view.findViewById(R.id.button2);
+        addcourse = view.findViewById(R.id.button2);
         leftViewLayout = view.findViewById(R.id.left_view_layout);
-
         day_1 = view.findViewById(R.id.monday);
         day_2 = view.findViewById(R.id.tuesday);
         day_3 = view.findViewById(R.id.wednesday);
@@ -129,7 +134,7 @@ public class TimeTableFragment extends Fragment {
         day_7 = view.findViewById(R.id.weekday);
 
 
-        button.setOnClickListener(v -> {
+        addcourse.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), AddCourseActivity.class);
             this.startActivityForResult(intent, 0);
         });
@@ -160,7 +165,6 @@ public class TimeTableFragment extends Fragment {
         }
 
     }
-
 
     //创建课程节数视图
     private void createLeftView() {
@@ -216,28 +220,39 @@ public class TimeTableFragment extends Fragment {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
                     (ViewGroup.LayoutParams.MATCH_PARENT, (course.getEnd() - course.getStart() + 1) * height - 8); //设置布局高度,即跨多少节课
             v.setLayoutParams(params);
+            CardView background = v.findViewById(R.id.background);
+
+            background.setBackgroundColor(Color.parseColor(course.getColor()));
             TextView text = v.findViewById(R.id.text_view);
             text.setText(course.getCourseName() + "\n" + course.getTeacher() + "\n" + course.getClassRoom()); //显示课程名
             day.addView(v);
             //长按删除课程
             v.setOnLongClickListener(v1 -> {
 
-                // TODO: 2018/11/14 这里需要添加一个确定弹窗
 
-                v1.setVisibility(View.GONE);//先隐藏
-                day.removeView(v1);//再移除课程视图
-                /*这里写删除科课程的代码*/
-                ArrayList<Course> coursesList = (ArrayList<Course>) aCache.getAsObject("tablelist");
-                for (int i = 0; i < coursesList.size(); i++) {
-                    if (coursesList.get(i).getCourseName().equals(course.getCourseName())
-                            && coursesList.get(i).getClassRoom().equals(course.getClassRoom())
-                            && coursesList.get(i).getDay() == course.getDay()
-                            && coursesList.get(i).getTeacher().equals(course.getTeacher())
-                            && coursesList.get(i).getStart() == course.getStart()) {
-                        coursesList.remove(i);
+                AlertDialog.Builder builder  = new AlertDialog.Builder(getActivity());
+                builder.setTitle("温馨提示" ) ;
+                builder.setMessage("是否删除日程？" ) ;
+                builder.setPositiveButton("是", (dialog, which) -> {
+                    v1.setVisibility(View.GONE);//先隐藏
+                    day.removeView(v1);//再移除课程视图
+                    /*这里写删除科课程的代码*/
+                    ArrayList<Course> coursesList = (ArrayList<Course>) aCache.getAsObject("tablelist");
+                    for (int i = 0; i < coursesList.size(); i++) {
+                        if (coursesList.get(i).getCourseName().equals(course.getCourseName())
+                                && coursesList.get(i).getClassRoom().equals(course.getClassRoom())
+                                && coursesList.get(i).getDay() == course.getDay()
+                                && coursesList.get(i).getTeacher().equals(course.getTeacher())
+                                && coursesList.get(i).getStart() == course.getStart()) {
+                            coursesList.remove(i);
+                        }
                     }
-                }
-                aCache.put("tablelist", coursesList);
+                    aCache.put("tablelist", coursesList);
+                });
+                builder.setNegativeButton("否", null);
+                builder.show();
+
+
                 return true;
             });
         }
