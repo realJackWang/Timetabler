@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#03a9f4</color>
-    <color name="colorPrimaryDark">#81d4fa</color>
+    <color name="colorPrimaryDark">#03a9f4</color>
     <color name="colorAccent">#ff9800</color>
 
     <color name="black">#000000</color>
@@ -32,8 +32,17 @@
     <color name="background">#f9f9f9</color>
     <color name="lightGray">#bdbdbd</color>
     <color name="lightwhite">#e7f2ff</color>
+    <color name="lightblue">#40c4ff</color>
 
+    <color name="course_1">#d50000</color>
+    <color name="course_2">#ff4081</color>
+    <color name="course_3">#d500f9</color>
+    <color name="course_4">#2979ff</color>
+    <color name="course_5">#00e5ff</color>
+    <color name="course_6">#388e3c</color>
+    <color name="course_7">#ff3d00</color>
+    <color name="course_8">#5d4037</color>
+    <color name="course_9">#ffff00</color>
 
-
-
+    <color name="perweek">#311b92</color>
 </resources>
