@@ -1,6 +1,7 @@
 package com.botton.timetabler.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,6 +32,7 @@ import com.botton.timetabler.util.Course;
 import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
+
 import java.lang.Math;
 
 /**
@@ -38,7 +41,7 @@ import java.lang.Math;
 
 
 public class TimeTableFragment extends Fragment {
-    
+
     private RelativeLayout day;
     private RelativeLayout day_1;
     private RelativeLayout day_2;
@@ -59,9 +62,10 @@ public class TimeTableFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timetable, container, false);
-        Log.e(TAG, "onCreateView");
+//        Log.e(TAG, "onCreateView");
         initview(view);
         inittable();
+        createInitCouresView(view);
         return view;
     }
 
@@ -184,6 +188,198 @@ public class TimeTableFragment extends Fragment {
         maxCoursesNumber = len;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private void createInitCouresView(View mainview) {
+        int height = 180;
+
+        for (int i = 1; i < 8; i++) {
+            switch (i) {
+                case 1:
+                    day = day_1;
+                    break;
+                case 2:
+                    day = day_2;
+                    break;
+                case 3:
+                    day = day_3;
+                    break;
+                case 4:
+                    day = day_4;
+                    break;
+                case 5:
+                    day = day_5;
+                    break;
+                case 6:
+                    day = day_6;
+                    break;
+                case 7:
+                    day = day_7;
+                    break;
+            }
+            for (int j = 0; j < 10; j++) {
+                final View v = LayoutInflater.from(getActivity()).inflate(R.layout.course_card, null); //加载单个课程布局
+                v.setY(height * (j)); //设置开始高度
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
+                        (ViewGroup.LayoutParams.MATCH_PARENT, height - 8); //设置布局高度,即跨多少节课
+                v.setLayoutParams(params);
+
+
+                final View v_2 = LayoutInflater.from(getActivity()).inflate(R.layout.course_card, null); //加载单个课程布局
+                v_2.setY(height * (j)); //设置开始高度
+                LinearLayout.LayoutParams params_2 = new LinearLayout.LayoutParams
+                        (ViewGroup.LayoutParams.MATCH_PARENT, height - 8); //设置布局高度,即跨多少节课
+                v_2.setLayoutParams(params_2);
+
+                v_2.setId(View.generateViewId());
+                Log.e(TAG, "V_2: " + j + ":" + v_2.getId());
+
+
+                CardView background = v.findViewById(R.id.background);
+                background.setBackgroundColor(Color.WHITE);
+
+                day.addView(v);
+                day.addView(v_2);
+                v_2.setVisibility(View.GONE);
+
+
+                v.setOnClickListener(v1 -> {
+                    int v_3id = ((((int) v_2.getId() - 1) / 10) / 2) * 20 + 11;
+                    int v_2id = (int) v_2.getId() - 20 * ((((int) v_2.getId() - 1) / 10) / 2);
+                    CardView v_3 = mainview.findViewById(v_3id);
+                    v_3.setVisibility(View.VISIBLE);
+                    v_3.setTextAlignment(v_2id-1);
+                    v_2.setVisibility(View.VISIBLE);
+                    v_2.setBackgroundResource(R.drawable.courseadd);
+                });
+
+//
+//
+//                if((int)v_2.getId()>1 && (int)v_2.getId()<11) {
+//                    int id = (int) v_2.getId() - 1 ;
+//                    CardView cardView = mainview.findViewById(id);
+//
+//                        v.setOnTouchListener((v1, event) -> {
+//                            if (cardView.getVisibility() == View.VISIBLE) {
+//
+//                                switch (event.getAction()) {
+//                                    case MotionEvent.ACTION_DOWN:
+//                                        v_2.setVisibility(View.VISIBLE);
+//                                        break;
+//                                }
+//                            }
+//                            return false;
+//                        });
+//                    }
+//
+//
+//                v_2.setOnTouchListener((v1, event) -> {
+//                    switch (event.getAction()) {
+//                        case MotionEvent.ACTION_DOWN:
+//                            v_2.setVisibility(View.VISIBLE);
+//                            Toast.makeText(getActivity(), "down", Toast.LENGTH_LONG).show();
+//                            break;
+//                        case MotionEvent.ACTION_UP:
+//                            Toast.makeText(getActivity(), "up", Toast.LENGTH_LONG).show();
+//                            break;
+//                        case MotionEvent.ACTION_MOVE:
+//                            Toast.makeText(getActivity(), "move", Toast.LENGTH_LONG).show();
+//                            break;
+//                    }
+//                    return false;
+//                });
+
+
+                v_2.setOnClickListener(v1 -> {
+                    Toast.makeText(getActivity(), "啦啦啦啦", Toast.LENGTH_LONG).show();
+                    v_2.setVisibility(View.GONE);
+                });
+
+
+            }
+
+
+            final View v_3 = LayoutInflater.from(getActivity()).inflate(R.layout.course_card, null); //加载单个课程布局
+            v_3.setY(0); //设置开始高度
+            LinearLayout.LayoutParams params_3 = new LinearLayout.LayoutParams
+                    (ViewGroup.LayoutParams.MATCH_PARENT, (10 - 1 + 1) * height - 8); //设置布局高度,即跨多少节课
+            v_3.setLayoutParams(params_3);
+
+            CardView background_3 = v_3.findViewById(R.id.background);
+            background_3.setBackgroundColor(Color.parseColor("#00000000"));
+
+            v_3.setId(View.generateViewId());
+            Log.e(TAG, "createInitCouresView: " + v_3.getId());
+
+            for (int k = 0; k < 9; k++) {
+                View.generateViewId();
+            }
+
+            v_3.setOnClickListener(v -> Log.e(TAG, "V_3: " + v_3.getId()));
+            v_3.setVisibility(View.GONE);
+
+            v_3.setOnTouchListener(new View.OnTouchListener() {
+                int lastX = 0, lastY = 0;
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    switch (event.getAction()) {
+
+                        case MotionEvent.ACTION_DOWN:
+                            lastX = (int) event.getRawX();
+                            lastY = (int) event.getRawY();
+                            break;
+
+                        case MotionEvent.ACTION_MOVE:
+                            int moveX = (int) (event.getRawX() - lastX);
+                            int moveY = (int) (event.getRawY() - lastY);
+
+                            int[] location = new int[2];
+                            v_3.getLocationOnScreen(location); //获取控件的高度
+
+                            lastX = (int) event.getRawX();
+                            lastY = (int) event.getRawY();
+                            Log.e("TAL", "MOVE_X:" + location[1]);
+                            Log.e("TAL", "MOVE_Y:" + moveY);
+                            Log.e("TAL", "你摸到了第:" + (((int) (event.getRawY() - location[1]) / 180) + 1) + "个");
+
+                            int pressed = (int) ((event.getRawY() - location[1]) / 180) + 1;
+
+                            for (int i = v_3.getTextAlignment(); i < 10; i++) {
+                                if (i < pressed) {
+                                    int id = ((((int) v_3.getId() - 1) / 10) / 2) * 20 + i + 1;
+                                    CardView cardView = mainview.findViewById(id);
+                                    cardView.setVisibility(View.VISIBLE);
+                                } else {
+                                    int id = ((((int) v_3.getId() - 1) / 10) / 2) * 20 + i + 1;
+                                    CardView cardView = mainview.findViewById(id);
+                                    cardView.setVisibility(View.GONE);
+                                }
+                            }
+
+                            if (pressed-1 < v_3.getTextAlignment()){
+                                v_3.setVisibility(View.GONE);
+                            }
+
+                            break;
+
+                        case MotionEvent.ACTION_UP:
+                            Log.e("TAL", "触摸到我了！ACTION_UP");
+                            break;
+
+                    }
+
+                    return false;
+                }
+            });
+
+            day.addView(v_3);
+
+
+        }
+
+    }
+
     //创建课程视图
     private void createCourseView(final Course course) {
         int height = 180;
@@ -226,13 +422,12 @@ public class TimeTableFragment extends Fragment {
             TextView text = v.findViewById(R.id.text_view);
             text.setText(course.getCourseName() + "\n" + course.getTeacher() + "\n" + course.getClassRoom()); //显示课程名
             day.addView(v);
+
             //长按删除课程
             v.setOnLongClickListener(v1 -> {
-
-
-                AlertDialog.Builder builder  = new AlertDialog.Builder(getActivity());
-                builder.setTitle("温馨提示" ) ;
-                builder.setMessage("是否删除日程？" ) ;
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("温馨提示");
+                builder.setMessage("是否删除日程？");
                 builder.setPositiveButton("是", (dialog, which) -> {
                     v1.setVisibility(View.GONE);//先隐藏
                     day.removeView(v1);//再移除课程视图
