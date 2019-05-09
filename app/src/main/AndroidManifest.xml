@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.BottomBarActivity" />
+        <activity android:name=".activity.AddHomeWorkActivity"></activity>
         <activity android:name=".activity.CourseHomeworkActivity" />
         <activity android:name=".activity.TimeGraphActivity" />
         <activity android:name=".activity.TodoListActivity"></activity>
