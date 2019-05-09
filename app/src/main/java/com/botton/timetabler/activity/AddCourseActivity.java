@@ -3,10 +3,13 @@ package com.botton.timetabler.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +25,7 @@ import com.botton.timetabler.R;
 import com.botton.timetabler.util.Course;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.botton.timetabler.util.StringUtil;
@@ -60,9 +64,12 @@ public class AddCourseActivity extends AppCompatActivity {
     private TextView coursetimetext;
     private EditText inputCourseName;
     private EditText inputplace;
+    private LinearLayout layout;
     private int startTime = 0;
     private int endTime = 0;
     private int dayTime = 0;
+
+    private boolean aaaa = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +78,8 @@ public class AddCourseActivity extends AppCompatActivity {
         setFinishOnTouchOutside(false);
 
         initview();
+
+
         submit();
 
 
@@ -83,34 +92,85 @@ public class AddCourseActivity extends AppCompatActivity {
 
     }
 
-    private void initview(){
+    private void initview() {
         inputCourseName = findViewById(R.id.course_name);
         inputplace = findViewById(R.id.course_place);
         coursetimetext = findViewById(R.id.course_time_text);
         courestime = findViewById(R.id.course_time);
+        layout = findViewById(R.id.linearLayout);
+
         mHandler.sendEmptyMessage(MSG_LOAD_DATA);
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(v -> {
             finish();
         });
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            List<Course> lists = (List<Course>) bundle.getSerializable("course");
+            if (lists != null) {
+                addtime(lists);
+                aaaa = false;
+            }
+        }
+
+
+//        String strContentString = bundle.getString("course");
+
+
     }
 
-    private void submit(){
+    private void addtime(List<Course> lists) {
+        Log.e("ContentValues", "V_2: "+lists);
 
+        LinearLayout linearLayout = findViewById(R.id.linearLayout);
+        linearLayout.removeViewAt(1);
+        for(int i =0;i<lists.size();i++){
+            View v = LayoutInflater.from(this).inflate(R.layout.single_timeselect, null);
+            Course course =  lists.get(i);
+            TextView textView = v.findViewById(R.id.course_time_text);
+            String day = StringUtil.dayToString(course.getDay()+1);
+            textView.setText(day+"：第"+(course.getStart()+1)+"节"+"-第"+(course.getEnd()+1)+"节");
+
+            linearLayout.addView(v,linearLayout.getChildCount()-1);
+        }
+
+    }
+
+    private void submit() {
+        LinearLayout linearLayout = findViewById(R.id.linearLayout);
         Button okButton = findViewById(R.id.submit);
         okButton.setOnClickListener(v -> {
             String courseName = inputCourseName.getText().toString();
             String teacher = "";
             String classRoom = inputplace.getText().toString();
 
-            if (courseName.equals("") || dayTime==0 || startTime == 0 || endTime == 0) {
+            if (courseName.equals("") || (coursetimetext.getText().equals("") && aaaa)) {
                 Toast.makeText(AddCourseActivity.this, "基本课程信息未填写", Toast.LENGTH_SHORT).show();
             } else {
+                ArrayList<Course> lists = new ArrayList<>();
                 Random random = new Random();
-                Course course = new Course(courseName, teacher, classRoom,
-                        Integer.valueOf(dayTime), Integer.valueOf(startTime), Integer.valueOf(endTime), (1 + random.nextInt(8)));
+                int random_num = (1 + random.nextInt(7));
+                for (int i=0;i<linearLayout.getChildCount()-2;i++) {
+
+                    LinearLayout linearLayout1 = (LinearLayout) linearLayout.getChildAt(i+1);
+                    TextView textView = linearLayout1.findViewById(R.id.course_time_text);
+
+                    String[] strings = textView.getText().toString().split("：|-");
+
+                    dayTime = StringUtil.stringToDay(strings[0]);
+                    startTime =StringUtil.findIntInString(strings[1]) ;
+                    endTime = StringUtil.findIntInString(strings[2]);
+
+
+                    Course course = new Course(courseName, teacher, classRoom,
+                            Integer.valueOf(dayTime), Integer.valueOf(startTime), Integer.valueOf(endTime), random_num);
+                    lists.add(course);
+                }
+
                 Intent intent = new Intent(AddCourseActivity.this, BtmBarActivity.class);
-                intent.putExtra("course", course);
+                intent.putExtra("course", lists);
 
                 setResult(0, intent);
                 finish();
@@ -286,7 +346,6 @@ public class AddCourseActivity extends AppCompatActivity {
     };
 
 
-
     private void showPickerView() {// 弹出选择器
 
         OptionsPickerView pvOptions = new OptionsPickerBuilder(this, (options1, options2, options3, v) -> {
@@ -297,8 +356,8 @@ public class AddCourseActivity extends AppCompatActivity {
             endTime = StringUtil.findIntInString(options3Items.get(options1).get(options2).get(options3));
 
             //返回的分别是三个级别的选中位置
-            String tx = options1Items.get(options1).getPickerViewText() +":"+
-                    options2Items.get(options1).get(options2) +"-"+
+            String tx = options1Items.get(options1).getPickerViewText() + ":" +
+                    options2Items.get(options1).get(options2) + "-" +
                     options3Items.get(options1).get(options2).get(options3);
 
             coursetimetext.setText(tx);

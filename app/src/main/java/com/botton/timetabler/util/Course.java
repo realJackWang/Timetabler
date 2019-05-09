@@ -14,8 +14,11 @@ public class Course implements Serializable {
     private int classStart;
     private int classEnd;
     private String color;
-    String[] colors ={"#d50000","#ff4081","#d500f9","#2979ff","#00e5ff","#3388e3c","#ff3d00","#5d4037","#ffff00"};
-    public Course(String courseName, String teacher, String classRoom, int day, int classStart, int classEnd,int color) {
+    int id = 0;
+
+    String[] colors = {"#d50000", "#ff4081", "#d500f9", "#2979ff", "#00e5ff", "#3388e3c", "#ff3d00", "#5d4037"};
+
+    public Course(String courseName, String teacher, String classRoom, int day, int classStart, int classEnd, int color) {
 
         this.courseName = courseName;
         this.teacher = teacher;
@@ -24,7 +27,19 @@ public class Course implements Serializable {
         this.classStart = classStart;
         this.classEnd = classEnd;
         this.color = colors[color];
+    }
 
+    public Course(int day, int classStart, int classEnd, int id) {
+        this.day = day;
+        this.classStart = classStart;
+        this.classEnd = classEnd;
+        this.id = id;
+    }
+
+    public Course(int day, int classStart, int classEnd) {
+        this.day = day;
+        this.classStart = classStart;
+        this.classEnd = classEnd;
     }
 
     public String getCourseName() {
@@ -83,4 +98,13 @@ public class Course implements Serializable {
     public void setColor(String color) {
         this.color = color;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }
