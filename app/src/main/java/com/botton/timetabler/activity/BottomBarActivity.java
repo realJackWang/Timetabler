@@ -14,6 +14,10 @@ import com.botton.timetabler.fragment.DiscoverFragment;
 import com.botton.timetabler.fragment.TimeTableFragment;
 import com.botton.timetabler.R;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,7 +43,7 @@ public class BottomBarActivity extends FragmentActivity {
         setContentView(R.layout.activity_bottombar);
         test_a =this;
 
-
+        spdier();
         BottomNavigationBar bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
         bottomNavigationBar
@@ -146,6 +150,23 @@ public class BottomBarActivity extends FragmentActivity {
             }
         }
     }
+
+    private void spdier(){
+        Thread thread=new Thread(() -> {
+            try {
+                Document doc = Jsoup.connect("http://www.budejie.com/1").get();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
+    }
+
+
+
+
+
+
 
 
 

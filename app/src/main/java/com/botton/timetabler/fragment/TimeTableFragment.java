@@ -27,7 +27,6 @@ import com.botton.timetabler.util.ACache;
 import com.botton.timetabler.util.Course;
 
 import java.util.ArrayList;
-
 import static android.content.ContentValues.TAG;
 
 import java.util.List;
@@ -41,7 +40,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class TimeTableFragment extends Fragment {
-
+    
     private RelativeLayout day;
     private RelativeLayout day_1;
     private RelativeLayout day_2;
@@ -141,10 +140,7 @@ public class TimeTableFragment extends Fragment {
 //    }
 
     private void test() {
-        List<Course> courselist = new ArrayList<>();
-        Course course = new Course(1, 1, 1, 1);
-        courselist.add(course);
-        courselists.add(courselist);
+
     }
 
     // 初始化控件
