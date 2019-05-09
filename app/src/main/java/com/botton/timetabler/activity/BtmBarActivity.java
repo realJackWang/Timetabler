@@ -60,9 +60,9 @@ public class BtmBarActivity extends AppCompatActivity {
 
 
         //初始加载课程表fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, timeTableFragment).commit();
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.frameLayout, timeTableFragment).commit();
 
         //设置默认选中项
         RadioButton kcbButton = findViewById(R.id.rb_kcb);

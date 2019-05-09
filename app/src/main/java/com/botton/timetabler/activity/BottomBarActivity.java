@@ -43,7 +43,7 @@ public class BottomBarActivity extends FragmentActivity {
         setContentView(R.layout.activity_bottombar);
         test_a =this;
 
-        spdier();
+//        spdier();
         BottomNavigationBar bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
         bottomNavigationBar

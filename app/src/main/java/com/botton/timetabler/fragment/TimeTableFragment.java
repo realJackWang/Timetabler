@@ -23,8 +23,10 @@ import android.widget.Toast;
 
 import com.botton.timetabler.activity.AddCourseActivity;
 import com.botton.timetabler.R;
+import com.botton.timetabler.activity.AddHomeWorkActivity;
 import com.botton.timetabler.util.ACache;
 import com.botton.timetabler.util.Course;
+import com.botton.timetabler.util.HomeWork;
 
 import java.util.ArrayList;
 import static android.content.ContentValues.TAG;
@@ -509,7 +511,7 @@ public class TimeTableFragment extends Fragment {
             v.setLayoutParams(params);
 
             v.setId(View.generateViewId());
-            Log.e(TAG, "createInitCouresView: " + v.getId());
+//            Log.e(TAG, "createInitCouresView: " + v.getId());
 
             course.setId(v.getId());
 
@@ -521,6 +523,34 @@ public class TimeTableFragment extends Fragment {
 
             day.addView(v);
 
+            v.setOnClickListener(v1 -> {
+                Log.e(TAG, "Yes: ");
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("温馨提示");
+                builder.setMessage("是否添加作业？");
+                builder.setPositiveButton("是", (dialog, which) -> {
+                    int index = 0;
+                    ArrayList<Course> coursesList = (ArrayList<Course>) aCache.getAsObject("tablelist");
+                    for (int i = 0; i < coursesList.size(); i++) {
+                        if (coursesList.get(i).getCourseName().equals(course.getCourseName())
+                                && coursesList.get(i).getClassRoom().equals(course.getClassRoom())
+                                && coursesList.get(i).getDay() == course.getDay()
+                                && coursesList.get(i).getTeacher().equals(course.getTeacher())
+                                && coursesList.get(i).getStart() == course.getStart()) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    Intent intent = new Intent(getContext(), AddHomeWorkActivity.class);
+                    intent.putExtra("course", coursesList.get(index));
+                    this.startActivityForResult(intent, 0);
+                });
+
+                builder.setNegativeButton("否", null);
+                builder.show();
+
+
+            });
 
             //长按删除课程
             v.setOnLongClickListener(v1 -> {
@@ -546,8 +576,6 @@ public class TimeTableFragment extends Fragment {
                 });
                 builder.setNegativeButton("否", null);
                 builder.show();
-
-
                 return true;
             });
         }
@@ -595,7 +623,7 @@ public class TimeTableFragment extends Fragment {
 
 
         v.setId(View.generateViewId());
-        Log.e(TAG, "createInitCouresView: " + v.getId());
+//        Log.e(TAG, "createInitCouresView: " + v.getId());
 
         CardView background = v.findViewById(v.getId());
         background.setBackgroundColor(Color.WHITE);
