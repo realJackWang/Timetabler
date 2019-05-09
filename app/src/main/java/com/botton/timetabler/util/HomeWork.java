@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @email 544907049@qq.com
  **/
 public class HomeWork implements Serializable {
-    
+
     public String CreateTime;
     public String Deadline;
     public String Content;
